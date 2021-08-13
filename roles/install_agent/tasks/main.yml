@@ -1,0 +1,3 @@
+---
+- name: Install Consul
+  include_tasks: "{{ ansible_facts['os_family'] | lower }}.yml"

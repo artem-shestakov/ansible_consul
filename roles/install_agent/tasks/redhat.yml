@@ -1,0 +1,17 @@
+---
+- name: Add Hashicorp repository
+  get_url:
+    url: https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+    dest: /etc/yum.repos.d/hashicorp.repo
+
+- name: Install a specific version Consul
+  yum:
+    name: consul-{{ version }}
+  when: version is define
+  notify: Enable and start Consul
+
+- name: Install Consul
+  yum:
+    name: consul
+  when: version is not define
+  notify: Enable and start Consul
