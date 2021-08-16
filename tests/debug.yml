@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: vagrant
+  become: yes
+  tasks:
+    - name: debug
+      debug:
+        msg: "{{ hostvars[inventory_hostname].ansible_all_ipv4_addresses[1] }}"

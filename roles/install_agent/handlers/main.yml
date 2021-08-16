@@ -4,3 +4,8 @@
     name: consul
     state: started
     enabled: true
+
+- name: Restart Consul agent
+  service:
+    name: consul
+    state: restarted

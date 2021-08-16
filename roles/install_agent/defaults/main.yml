@@ -1,2 +1,22 @@
 ---
-# defaults file for install_agent
+datacenter: dc1
+client_addr: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}"
+bind_addr: "client_addr"
+addresses:
+  dns: "{{ client_addr }}"
+  http: "{{ client_addr }}"
+  https: "{{ client_addr }}"
+ports:
+  dns: 8600
+  http: 8500
+  https: -1
+data_dir: /opt/consuls
+retry_interval: 30s
+log_level: INFO
+node_name: "{{ ansible_hostname }}"
+enable_syslog: true
+verify_incoming: true
+verify_outgoing: true
+verify_server_hostname: true
+raft_multiplier: 1
+ui: true
