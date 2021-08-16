@@ -1,3 +1,44 @@
 ---
 - name: Install Consul
   include_tasks: "{{ ansible_facts['os_family'] | lower }}.yml"
+
+- name: Generate the gossip encryption key
+  command:
+    cmd: consul keygen
+  register: encrypt
+  when: inventory_hostname in groups['servers'] and groups.servers.index(inventory_hostname) == 0
+
+- name: Configure Consul agents
+  template:
+    src: consul.hcl.j2
+    dest: /etc/consul.d/consul.hcl
+    owner: consul
+    group: consul
+    mode: '0640'
+  notify: Restart Consul agent
+
+- name: Consul server configuration
+  template:
+    src: server.hcl.j2
+    dest: /etc/consul.d/server.hcl
+    owner: consul
+    group: consul
+    mode: '0640'
+  when: inventory_hostname in groups['servers']
+  notify: Restart Consul agent
+
+- name: Configure systemd
+  template:
+    src: consul.service.j2
+    dest: /usr/lib/systemd/system/consul.service
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Configura data dir
+  file:
+    path: "{{data_dir}}"
+    owner: consul
+    group: consul
+    mode: '0744'
+    recurse: yes

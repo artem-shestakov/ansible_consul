@@ -1,0 +1,36 @@
+datacenter = "{{datacenter}}"
+client_addr = "127.0.0.1 {{client_addr}}"
+bind_addr = "{{client_addr}}"
+addresses {
+    dns = "127.0.0.1 {{ addresses.dns }}"
+    http = "127.0.0.1 {{ addresses.http }}"
+    https = "127.0.0.1 {{ addresses.https }}"
+}
+ports {
+    dns = {{ ports.dns }}
+    http = {{ ports.http }}
+    https = {{ ports.https }}
+}
+data_dir = "{{data_dir}}"
+encrypt = "{{hostvars[groups.servers[0]].encrypt.stdout}}"
+{%- if recursors is defined %}
+recursors = [
+    {% for dns in recursors -%}
+    "{{ dns }}",
+    {% endfor -%}
+]
+{% endif %} 
+log_level = "{{ log_level }}"
+enable_syslog = {{ enable_syslog|bool|lower }}
+node_name = "{{ node_name }}"
+# ca_file = "/etc/consul.d/consul-agent-ca.pem"
+# cert_file = "/etc/consul.d/dc1-server-consul-0.pem"
+# key_file = "/etc/consul.d/dc1-server-consul-0-key.pem"
+# verify_incoming = {{verify_incoming}}
+# verify_outgoing = {{verify_outgoing}}
+# verify_server_hostname = {{verify_server_hostname}}
+retry_join = [{% for server in groups.servers %} "{{server}}", {% endfor %}]
+retry_interval = "{{ retry_interval }}"
+performance {  
+    raft_multiplier = {{raft_multiplier}}
+}
