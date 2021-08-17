@@ -1,0 +1,25 @@
+---
+- name: Configure Consul agents
+  template:
+    src: consul.hcl.j2
+    dest: /etc/consul.d/consul.hcl
+    owner: consul
+    group: consul
+    mode: '0640'
+  notify: Restart Consul agent
+
+- name: Configura data dir
+  file:
+    path: "{{data_dir}}"
+    owner: consul
+    group: consul
+    mode: '0744'
+    recurse: yes
+
+- name: Configure systemd
+  template:
+    src: consul.service.j2
+    dest: /usr/lib/systemd/system/consul.service
+    owner: root
+    group: root
+    mode: '0644'
