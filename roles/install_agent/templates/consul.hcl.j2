@@ -1,6 +1,6 @@
 datacenter = "{{datacenter}}"
 client_addr = "127.0.0.1 {{client_addr}}"
-bind_addr = "{{client_addr}}"
+bind_addr = "{{ client_addr }}"
 addresses {
     dns = "127.0.0.1 {{ addresses.dns }}"
     http = "127.0.0.1 {{ addresses.http }}"
@@ -11,8 +11,8 @@ ports {
     http = {{ ports.http }}
     https = {{ ports.https }}
 }
-data_dir = "{{data_dir}}"
-encrypt = "{{hostvars[groups.servers[0]].encrypt.stdout}}"
+data_dir = "{{ data_dir }}"
+encrypt = "{{ encrypt }}"
 {%- if recursors is defined %}
 recursors = [
     {% for dns in recursors -%}

@@ -2,11 +2,8 @@
 - name: Install Consul
   include_tasks: "{{ ansible_facts['os_family'] | lower }}.yml"
 
-- name: Generate the gossip encryption key
-  command:
-    cmd: consul keygen
-  register: encrypt
-  when: inventory_hostname in groups['servers'] and groups.servers.index(inventory_hostname) == 0
+- name: Setting the gossip encryption key
+  include_tasks: gossip_encryption.yml
 
 - name: Configure Consul agents
   template:
