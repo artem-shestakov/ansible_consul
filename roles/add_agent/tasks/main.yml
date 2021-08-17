@@ -1,0 +1,19 @@
+---
+- name: Install Consul
+  include_role:
+    name: ../roles/install_agent
+    tasks_from: install
+  when:
+    - inventory_hostname in groups.clients
+
+- name: Setting the gossip encryption key
+  include_tasks: gossip_encryption.yml
+  when: 
+    - encrypt is not defined 
+
+- name: Configure consul agent
+  include_role:
+    name: ../roles/install_agent
+    tasks_from: client
+  when:
+    - inventory_hostname in groups.clients

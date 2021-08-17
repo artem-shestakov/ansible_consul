@@ -3,6 +3,18 @@
   remote_user: vagrant
   become: yes
   tasks:
+    - name: Read the gossip encryption key
+      shell:
+        cmd: "cat /etc/consul.d/consul.hcl | grep encrypt | awk '{print $3}'"
+      register: encrypt_string_read
+      run_once: true
+    
+    - name: Save the gossip encryption key
+      set_fact:
+        encrypt_string: "{{ encrypt_string_read.stdout }}"
+      when: encrypt_string_read.stdout != ""
+    
     - name: debug
       debug:
-        msg: "{{ hostvars[inventory_hostname].ansible_all_ipv4_addresses[1] }}"
+        msg: "{{ encrypt_string }}"
+    
