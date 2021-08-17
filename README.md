@@ -27,3 +27,6 @@ All variables used in this role are similar to the Consul parameters. These the 
     verify_outgoing: true
     verify_server_hostname: true
 ```
+### Gossip encrypt key
+New encrypt key will be generated(by `consul keygen` command) if there is now `encrypt` parameter in `consul.hcl` file or file not exists on first consul server.
+If `encrypt` parameter exists and it's not empty string, role will use it for all instances.
