@@ -1,22 +1,37 @@
 ---
-datacenter: dc1
-client_addr: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}"
-bind_addr: "client_addr"
 addresses:
   dns: "{{ client_addr }}"
   http: "{{ client_addr }}"
   https: "{{ client_addr }}"
-ports:
-  dns: 8600
-  http: 8500
-  https: -1
-data_dir: /opt/consuls
-retry_interval: 30s
+  grpc: "{{ client_addr }}"
+advertise_addr: "{{ client_addr }}"
+advertise_addr_wan: "{{ client_addr }}"
+bind_addr: "{{ client_addr }}"
+bootstrap_expect: "{{ groups.servers|length }}"
+client_addr: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}"
+data_dir: /opt/consul
+datacenter: dc1
+disable_update_check: false
+enable_script_checks: false
+enable_syslog: true
 log_level: INFO
 node_name: "{{ ansible_hostname }}"
-enable_syslog: true
-verify_incoming: true
-verify_outgoing: true
-verify_server_hostname: true
-raft_multiplier: 1
+performance:
+  leave_drain_time: 5s
+  raft_multiplier: 1
+  rpc_hold_timeout: 7s
+ports:
+  dns: "{{ ports_dns | default(8600, true) }}"
+  http: "{{ ports_http | default(8500, true) }}"
+  https: "{{ ports_https | default(-1, true) }}"
+  grpc: "{{ ports_grpc | default(-1, true) }}"
+  serf_lan: "{{ ports_serf_lan | default(8301, true) }}"
+  serf_wan: "{{ ports_serf_wan | default(8302, true) }}"
+  server: "{{ ports_server | default(8300, true) }}"
+  sidecar_min_port: "{{ ports_sidecar_min_port | default(21000, true) }}"
+  sidecar_max_port: "{{ ports_sidecar_max_port | default(21255, true) }}"
+  expose_min_port: "{{ ports_expose_min_port | default(21500, true) }}"
+  expose_max_port: "{{ ports_expose_max_port | default(21755, true) }}"
+raft_protocol: 3
+retry_interval: 30s
 ui: true

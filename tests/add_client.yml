@@ -3,8 +3,8 @@
   remote_user: vagrant
   become: yes
   roles:
-    - "../roles/add_agent"
+    - "../roles/join_agent"
   vars:
     version: 1.8.0
-    client_addr: "{{ hostvars[inventory_hostname].ansible_all_ipv4_addresses[1] }}"
+    encrypt: TgGhTZTpWlZZPl98NYaEv7hpYekstbVN9Av3wiQBGSc=
     

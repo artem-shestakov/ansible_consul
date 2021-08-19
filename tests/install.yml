@@ -4,7 +4,4 @@
   become: yes
   roles:
     - "../roles/install_agent"
-  vars:
-    version: 1.8.0
-    client_addr: "{{ hostvars[inventory_hostname].ansible_all_ipv4_addresses[1] }}"
     
