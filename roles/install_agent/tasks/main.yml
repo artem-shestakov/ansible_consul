@@ -5,8 +5,8 @@
 - name: Setting the gossip encryption key
   include_tasks: gossip_encryption.yml
 
-- name: Setting the gossip encryption key
+- name: Consigure agent config
   include_tasks: client.yml
 
-- name: Setting the gossip encryption key
+- name: Configure server config
   include_tasks: server.yml

@@ -1,18 +1,45 @@
-datacenter = "{{datacenter}}"
-client_addr = "127.0.0.1 {{client_addr}}"
-bind_addr = "{{ client_addr }}"
 addresses {
-    dns = "127.0.0.1 {{ addresses.dns }}"
-    http = "127.0.0.1 {{ addresses.http }}"
-    https = "127.0.0.1 {{ addresses.https }}"
+    dns = "{{ addresses.dns }}"
+    http = "{{ addresses.http }}"
+    https = "{{ addresses.https }}"
+    {% if addresses.grpc is defined -%}
+    grpc = "{{ addresses.grpc }}"
+    {% endif %} 
+}
+advertise_addr = "{{ advertise_addr }}"
+advertise_addr_wan = "{{ advertise_addr_wan }}"
+bind_addr = "{{ bind_addr }}"
+client_addr = "{{ client_addr }}"
+data_dir = "{{ data_dir }}"
+datacenter = "{{ datacenter }}"
+disable_update_check = {{ disable_update_check|bool|lower }}
+{% if domain is defined -%}
+domain = "{{ domain }}"
+{% endif -%}
+enable_script_checks = {{ enable_script_checks|bool|lower }}
+enable_syslog = {{ enable_syslog|bool|lower }}
+encrypt = "{{ encrypt }}"
+log_level = "{{ log_level }}"
+node_name = "{{ node_name }}"
+performance {
+    leave_drain_time = "{{ performance.leave_drain_time }}"
+    raft_multiplier = {{ performance.raft_multiplier }}
+    rpc_hold_timeout = "{{ performance.rpc_hold_timeout }}"
 }
 ports {
     dns = {{ ports.dns }}
     http = {{ ports.http }}
     https = {{ ports.https }}
+    grpc = {{ ports.grpc }}
+    serf_lan = {{ ports.serf_lan }}
+    serf_wan = {{ ports.serf_wan }}
+    server = {{ ports.server }}
+    sidecar_min_port = {{ ports.sidecar_min_port }}
+    sidecar_max_port = {{ ports.sidecar_max_port }}
+    expose_min_port = {{ ports.expose_min_port }}
+    expose_max_port = {{ ports.expose_max_port}}
 }
-data_dir = "{{ data_dir }}"
-encrypt = "{{ encrypt }}"
+raft_protocol = {{ raft_protocol }}
 {%- if recursors is defined %}
 recursors = [
     {% for dns in recursors -%}
@@ -20,17 +47,9 @@ recursors = [
     {% endfor -%}
 ]
 {% endif %} 
-log_level = "{{ log_level }}"
-enable_syslog = {{ enable_syslog|bool|lower }}
-node_name = "{{ node_name }}"
-# ca_file = "/etc/consul.d/consul-agent-ca.pem"
-# cert_file = "/etc/consul.d/dc1-server-consul-0.pem"
-# key_file = "/etc/consul.d/dc1-server-consul-0-key.pem"
-# verify_incoming = {{verify_incoming}}
-# verify_outgoing = {{verify_outgoing}}
-# verify_server_hostname = {{verify_server_hostname}}
-retry_join = [{% for server in groups.servers %} "{{server}}", {% endfor %}]
 retry_interval = "{{ retry_interval }}"
-performance {  
-    raft_multiplier = {{raft_multiplier}}
-}
+retry_join = [
+    {% for server in groups.servers -%} 
+    "{{server}}", 
+    {% endfor -%}
+]
