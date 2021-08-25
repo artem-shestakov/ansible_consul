@@ -1,7 +1,10 @@
 ---
-- hosts: all
+- hosts: dc1
   remote_user: vagrant
   become: yes
   roles:
     - "../roles/install_agent"
+  vars:
+    - datacenter: dc1
+    - bind_iface: enp0s8
     
