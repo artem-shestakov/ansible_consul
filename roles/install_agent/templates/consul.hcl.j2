@@ -49,7 +49,9 @@ recursors = [
 {% endif %} 
 retry_interval = "{{ retry_interval }}"
 retry_join = [
-    {% for server in groups.servers -%} 
-    "{{server}}", 
+    {% for host in ansible_play_hosts -%}
+    {% if hostvars[host].consul_role == 'server' -%} 
+    "{{host}}",
+    {% endif -%} 
     {% endfor -%}
 ]
