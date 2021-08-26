@@ -1,26 +1,54 @@
 ---
+# Read or generate encrypt key with first server
 - block:
-  - name: Read the gossip encryption key
-    shell:
-      cmd: "cat /etc/consul.d/consul.hcl | grep encrypt | awk '{print $3}' | sed 's/\"//g'"
-    register: encrypt_string_read
-    run_once: true
+  # Read encrypt key
+  - block:
+    - name: Read the gossip encryption key
+      shell:
+        cmd: "cat /etc/consul.d/consul.hcl | grep encrypt | awk '{print $3}' | sed 's/\"//g'"
+      register: encrypt_string_read
+    
+    - name: Save the gossip encryption key
+      set_fact:
+        encrypt_key: "{{ encrypt_string_read }}"
+      when: encrypt_string_read.stdout != ""
+    when:
+      - encrypt_key is not defined
 
-  - name: Save the gossip encryption key
-    set_fact:
-      encrypt: "{{ encrypt_string_read.stdout }}"
-    when: encrypt_string_read.stdout != ""
-  when: encrypt is not defined
+  - name: Write encrypt key locally
+    copy:
+      content: "{{ encrypt_string_read.stdout }}"
+      dest: '/tmp/encrypt.key'
+    become: false
+    vars:
+      ansible_become: false
+    delegate_to: localhost
+    when: encrypt_key is defined
 
-- block:
-  - name: Generate the gossip encryption key
-    command:
-      cmd: consul keygen
-    register: encrypt_string_gen
-    run_once: true
-
-  - name: Save the gossip encryption key
-    set_fact:
-      encrypt: "{{ encrypt_string_gen.stdout }}"
+  # Generate new encrypt key
+  - block:
+    - name: Generate the gossip encryption key
+      command:
+        cmd: consul keygen
+      register: encrypt_key
+      when: 
+        - encrypt_key is not defined
+    
+    - name: Write encryp key locally
+      copy:
+        content: "{{ encrypt_key.stdout }}"
+        dest: '/tmp/encrypt.key'
+      become: false
+      vars:
+        ansible_become: false
+      delegate_to: localhost
+    when: encrypt_key is not defined
   when: 
+    - encrypt is not defined
+    - inventory_hostname == consul_servers[0]
+  
+- name: Read gossip encryption key for servers that require it
+  set_fact:
+    encrypt: "{{ lookup('file', '/tmp/encrypt.key') }}"
+  when:
     - encrypt is not defined

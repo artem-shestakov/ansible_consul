@@ -20,3 +20,4 @@
     update_cache: yes
   when: version is not defined
   notify: Enable and start Consul
+  register: install_consul
