@@ -5,5 +5,6 @@
   tasks:
     - name: debug
       debug:
-        msg: "{{ groups }}"
-    
+        msg : "{{ ansible_play_hosts }}"
+        # msg: "{{ hostvars[inventory_hostname].consul_role }}"
+        # msg: "{{ hostvars[inventory_hostname].group_names[0] }}"

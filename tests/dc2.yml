@@ -1,0 +1,10 @@
+---
+- hosts: dc2
+  remote_user: vagrant
+  become: yes
+  roles:
+    - "../roles/install_agent"
+  vars:
+    - datacenter: dc2
+    - encrypt: 
+    

@@ -1,4 +1,6 @@
 ---
+bind_iface: "{{ ansible_default_ipv4.interface }}"
+
 addresses:
   dns: "{{ client_addr }}"
   http: "{{ client_addr }}"
@@ -8,7 +10,8 @@ advertise_addr: "{{ client_addr }}"
 advertise_addr_wan: "{{ client_addr }}"
 bind_addr: "{{ client_addr }}"
 bootstrap_expect: "{{ groups.servers|length }}"
-client_addr: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}"
+# client_addr: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}"
+client_addr: "{{ hostvars[inventory_hostname]['ansible_'+ bind_iface ]['ipv4'][0]['address'] }}"
 data_dir: /opt/consul
 datacenter: dc1
 disable_update_check: false

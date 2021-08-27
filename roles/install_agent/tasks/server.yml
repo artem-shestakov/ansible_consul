@@ -6,5 +6,6 @@
     owner: consul
     group: consul
     mode: '0640'
-  when: inventory_hostname in groups['servers']
+  when: consul_role == "server"
+  # when: inventory_hostname in groups['servers']
   notify: Restart Consul agent

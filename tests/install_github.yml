@@ -1,9 +1,0 @@
----
-- hosts: consul_instances
-  remote_user: vagrant
-  become: yes
-  roles:
-    - "../roles/ansible-consul"
-  vars: 
-    consul_version: 1.8.0
-    
