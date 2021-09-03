@@ -5,13 +5,17 @@
   roles:
     - "../roles/install_agent"
   vars:
+    - acl:
+        enabled: true
+        default_policy: deny
+        enable_token_persistence: true
     - bind_iface: enp0s8
     - client_addr: "127.0.0.1 {{ bind_addr }}"
     - datacenter: dc2
     - encrypt: YrHVSTrfX5EqEnwnQ+2QFqZv21oeggrJTOMU6RYTbx8=
     - enable_local_script_checks: true
     - ports_dns: 53
-    - primary_datacenter: dc1
+    - primary_datacenter: dc2
     - retry_join_wan:
       - 192.168.101.11
     - services:

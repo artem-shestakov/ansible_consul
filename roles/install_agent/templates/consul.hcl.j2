@@ -1,3 +1,8 @@
+acl = {  
+    enabled = {{ acl.enabled|default(false, true)|bool|lower }}  
+    default_policy = "{{ acl.default_policy|default('allow', true) }}"  
+    enable_token_persistence = {{ acl.enable_token_persistence|default(false, true)|bool|lower }}
+}
 addresses {
     dns = "{{ addresses.dns }}"
     http = "{{ addresses.http }}"

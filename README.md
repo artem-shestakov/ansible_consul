@@ -3,6 +3,14 @@
 ## Role variables
 ### Consule variables
 All variables used in this role are similar to the Consul parameters. These the detail description of parameters are available on the [Consul Configuration](https://www.consul.io/docs/agent/options) page.
+* **acl** This object allows a number of sub-keys to be set which controls the ACL system.
+
+| Keys | Description | Default
+| :--- | :--- | :---: |
+| enabled | Enables ACL | false |
+| default_policy | The default policy controls the behavior of a token when there is no matching rule. In "allow" mode, ACLs are a denylist: any operation not specifically prohibited is allowed. In "deny" mode, ACLs are an allowlist: any operation not specifically allowed is blocked | allow |
+| enable_token_persistence | Either true or false. When true tokens set using the API will be persisted to disk and reloaded when an agent restarts | false |
+
 * **addresses** - This is a nested object that allows setting bind addresses.
   * **dns** - The DNS server. By default, this is `client_addr`
   * **http** - The HTTP API. By default, this is `client_addr`
@@ -10,9 +18,9 @@ All variables used in this role are similar to the Consul parameters. These the 
   * **grpc** - The gRPC API. Defaults is not defined
 * **advertise_addr** - The advertise address is used to change the address that we advertise to other nodes in the cluster. By default, this is `client_addr`
 * **advertise_addr_wan** - The advertise WAN address is used to change the address that we advertise to server nodes joining through the WAN. By default, this is `client_addr`
-* **bind_addr** - The address that should be bound to for internal cluster communications. By default, this is `client_addr`
+* **bind_addr** - The address that should be bound to for internal cluster communications. By default, this is default host's IPv4 address.
 * **bootstrap_expect** - This flag provides the number of expected servers in the datacenter. By default, this is number if servers group of inventory, but less then 5.
-* **client_addr** - The address to which Consul will bind client interfaces, including the HTTP and DNS servers. By default, this is default host's IPv4 address. (`ansible_default_ipv4.address`)
+* **client_addr** - The address to which Consul will bind client interfaces, including the HTTP and DNS servers. By default, this is `bind_addr`
 * **data_dir** - This flag provides a data directory for the agent to store state. By default, this is `/opt/consul`
 * **datacenter** - This flag controls the datacenter in which the agent is running. By default, this is `dc1`
 * **disable_update_check** - Disables automatic checking for security bulletins and new version releases. By default, this is `false`
@@ -69,7 +77,7 @@ All variables used in this role are similar to the Consul parameters. These the 
   * **tags** - List of string values that can be used to add service-level labels
   * **checks** - Array of objects that define health checks for the service:
 
-| Checks params | Description  |
+| Checks keys | Description  |
 | :---   | :---         |
 | args   | List command and its params |
 | http   | These checks make an HTTP GET request to the specified URL, waiting the specified interval amount of time between requests |
