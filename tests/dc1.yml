@@ -7,4 +7,5 @@
   vars:
     - datacenter: dc1
     - bind_iface: enp0s8
+    - ports_dns: 53
     

@@ -6,5 +6,9 @@
     - "../roles/install_agent"
   vars:
     - datacenter: dc2
-    - encrypt: 
+    - encrypt: YrHVSTrfX5EqEnwnQ+2QFqZv21oeggrJTOMU6RYTbx8=
+    - ports_dns: 53
+    - primary_datacenter: dc1
+    - retry_join_wan:
+      - 192.168.101.11
     

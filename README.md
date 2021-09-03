@@ -55,10 +55,12 @@ All variables used in this role are similar to the Consul parameters. These the 
     expose_min_port: "{{ ports_expose_min_port | default(21500, true) }}"
     expose_max_port: "{{ ports_expose_max_port | default(21755, true) }}"
   ```
+* **primary_datacenter** - This designates the datacenter which is authoritative for ACL information, intentions and is the root Certificate Authority for Connect. It must be provided to enable ACLs. All servers and datacenters must agree on the primary datacenter.
 * **raft_protocol** - This controls the internal version of the Raft consensus protocol used for server communications. By default, this is `3`
-* **recursors** -  Specifies the address of an upstream DNS server. By default, this is not defined
+* **recursors** - Specifies the address of an upstream DNS server. By default, this is not defined
 * **retry_interval** - Time to wait between join attempts. Defaults to 30s.
 * **retry_join** - Addresses of another agents to join upon starting up. Allows retrying a join until it is successful. By default, this is not defined
+* **retry_join_wan** - List of addresses to attempt joining to WAN. By default, this is not defined
 * **ui** - Enables the built-in web UI server and the required HTTP routes. By default, this is `true`
 
 

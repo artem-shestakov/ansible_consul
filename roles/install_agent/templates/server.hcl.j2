@@ -1,3 +1,9 @@
-server = true
 bootstrap_expect = {% if consul_servers|length > 5 %}5{% else %}{{ consul_servers|length }}{% endif %} 
+{% if primary_datacenter is defined -%}
+primary_datacenter = "{{ primary_datacenter }}"
+{% endif -%}
+{% if retry_join_wan is defined -%}
+retry_join_wan = [{% for server in retry_join_wan %}"{{ server }}", {% endfor %}]
+{% endif -%}
+server = true
 ui = {{ui|bool|lower}}
