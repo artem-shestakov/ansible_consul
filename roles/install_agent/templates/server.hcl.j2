@@ -6,4 +6,4 @@ primary_datacenter = "{{ primary_datacenter }}"
 retry_join_wan = [{% for server in retry_join_wan %}"{{ server }}", {% endfor %}]
 {% endif -%}
 server = true
-ui = {{ui|bool|lower}}
+ui = {{ ui|bool|lower }}

@@ -15,6 +15,7 @@ data_dir: /opt/consul
 datacenter: dc1
 disable_update_check: false
 enable_script_checks: false
+enable_local_script_checks: false
 enable_syslog: true
 log_level: INFO
 node_name: "{{ ansible_hostname }}"

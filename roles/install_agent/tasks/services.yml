@@ -1,0 +1,9 @@
+---
+- name: Configure Consul services
+  template:
+    src: services.hcl.j2
+    dest: /etc/consul.d/services.hcl
+    owner: consul
+    group: consul
+    mode: '0640'
+  notify: Restart Consul agent

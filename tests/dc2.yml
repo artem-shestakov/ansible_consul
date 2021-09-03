@@ -9,8 +9,39 @@
     - client_addr: "127.0.0.1 {{ bind_addr }}"
     - datacenter: dc2
     - encrypt: YrHVSTrfX5EqEnwnQ+2QFqZv21oeggrJTOMU6RYTbx8=
+    - enable_local_script_checks: true
     - ports_dns: 53
     - primary_datacenter: dc1
     - retry_join_wan:
       - 192.168.101.11
-  
+    - services:
+      - hosts: 
+        - consul4
+        name: Web
+        port: 80
+        tags:
+          - web
+          - nginx
+        checks:
+          - args:
+              - curl
+              - https://localhost:80
+            interval: 30s
+            timeout: 60s
+      - hosts: 
+        - consul4
+        - consul5
+        - consul6
+        name: Consul Web
+        port: 8500
+        tags:
+          - web
+          - consul
+        checks:
+          - args:
+              - curl
+              - https://localhost:8500
+            tcp: localhost:8500
+            http: http://localhost:8500
+            interval: 30s
+            timeout: 60s

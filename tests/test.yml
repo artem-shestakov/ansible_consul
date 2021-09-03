@@ -1,9 +1,0 @@
----
-- name: Test
-  hosts: proxy
-  remote_user: artem.shestakov@sys.local
-  become: true
-  tasks:
-    - name: Addresses
-      debug:
-        msg: "{{ hostvars[inventory_hostname]['ansible_ens160'] }}"

@@ -1,10 +1,7 @@
 # Ansible Collection - artem_shestakov.conslul
-## Collection roles
-* **install_agent** - Install Consul on servers with roles `server` and `client` and configure a HashiCorp Consul datacenter.
-* **join_agents** - Join new `client` to exists HashiCorp Consul datacenter.
 
-## Install agent role: *install_agent*
-### Variables
+## Role variables
+### Consule variables
 All variables used in this role are similar to the Consul parameters. These the detail description of parameters are available on the [Consul Configuration](https://www.consul.io/docs/agent/options) page.
 * **addresses** - This is a nested object that allows setting bind addresses.
   * **dns** - The DNS server. By default, this is `client_addr`
@@ -21,6 +18,7 @@ All variables used in this role are similar to the Consul parameters. These the 
 * **disable_update_check** - Disables automatic checking for security bulletins and new version releases. By default, this is `false`
 * **domain** - Consul responds to DNS queries in the "consul." domain. This flag can be used to change that domain. By default, this is not defined
 * **enable_script_checks** - This controls whether health checks that execute scripts are enabled on this agent. By default, this is `false`
+* **enable_local_script_checks** - Like enable_script_checks, but only enable them when they are defined in the local configuration files. By default, this is `false`
 * **enable_syslog** - This flag enables logging to syslog. By default, this is `true`
 * **encrypt** - Specifies the secret key to use for encryption of Consul network traffic. By default, will be generated automatically
 * **log_level** - The level of logging to show after the Consul agent has started. By default, this is `INFO`
@@ -63,7 +61,23 @@ All variables used in this role are similar to the Consul parameters. These the 
 * **retry_join_wan** - List of addresses to attempt joining to WAN. By default, this is not defined
 * **ui** - Enables the built-in web UI server and the required HTTP routes. By default, this is `true`
 
+### Services
+* **services** - List of services for registration and check:
+  * **hosts** - List of hosts where service will be registered
+  * **name** - Specifies the name of the service
+  * **port** - Integer value that specifies a service-specific port number
+  * **tags** - List of string values that can be used to add service-level labels
+  * **checks** - Array of objects that define health checks for the service:
 
+| Checks params | Description  |
+| :---   | :---         |
+| args   | List command and its params |
+| http   | These checks make an HTTP GET request to the specified URL, waiting the specified interval amount of time between requests |
+| tcp     | These checks make a TCP connection attempt to the specified IP/hostname and port, waiting interval amount of time between attempts (e.g. 30 seconds). |
+| interval | Time between requests |
+| timeout | Specifies a timeout for outgoing connections in the case of a Script, HTTP, TCP, or gRPC check. Can be specified in the form of "10s" or "5m" (i.e., 10 seconds or 5 minutes, respectively) |
+
+## Examples
  Below is playbook sample with that variables:
 ```yaml
 ---

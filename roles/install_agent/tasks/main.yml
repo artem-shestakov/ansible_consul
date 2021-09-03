@@ -10,3 +10,6 @@
 
 - name: Configure server config
   include_tasks: server.yml
+
+- name: Configure Consul services
+  include_tasks: services.yml
