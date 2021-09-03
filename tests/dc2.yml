@@ -5,10 +5,12 @@
   roles:
     - "../roles/install_agent"
   vars:
+    - bind_iface: enp0s8
+    - client_addr: "127.0.0.1 {{ bind_addr }}"
     - datacenter: dc2
     - encrypt: YrHVSTrfX5EqEnwnQ+2QFqZv21oeggrJTOMU6RYTbx8=
     - ports_dns: 53
     - primary_datacenter: dc1
     - retry_join_wan:
       - 192.168.101.11
-    
+  
