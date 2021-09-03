@@ -2,20 +2,20 @@
 bind_iface: "{{ ansible_default_ipv4.interface }}"
 
 addresses:
-  dns: "{{ client_addr }}"
-  http: "{{ client_addr }}"
-  https: "{{ client_addr }}"
-  grpc: "{{ client_addr }}"
-advertise_addr: "{{ client_addr }}"
-advertise_addr_wan: "{{ client_addr }}"
-bind_addr: "{{ client_addr }}"
+  dns: "{{ addresses_dns | default(client_addr, true) }}"
+  http: "{{ addresses_http | default(client_addr, true) }}"
+  https: "{{ addresses_https | default(client_addr, true) }}"
+  grpc: "{{ addresses_grpc | default(client_addr, true) }}"
+advertise_addr: "{{ bind_addr }}"
+advertise_addr_wan: "{{ bind_addr }}"
+bind_addr: "{{ hostvars[inventory_hostname]['ansible_'+ bind_iface ]['ipv4']['address'] }}"
 bootstrap_expect: "{{ groups.servers|length }}"
-# client_addr: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}"
-client_addr: "{{ hostvars[inventory_hostname]['ansible_'+ bind_iface ]['ipv4'][0]['address'] }}"
+client_addr: "{{ bind_addr }}"
 data_dir: /opt/consul
 datacenter: dc1
 disable_update_check: false
 enable_script_checks: false
+enable_local_script_checks: false
 enable_syslog: true
 log_level: INFO
 node_name: "{{ ansible_hostname }}"

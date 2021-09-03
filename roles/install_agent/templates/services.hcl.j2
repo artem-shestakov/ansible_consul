@@ -1,0 +1,34 @@
+{% for service in services -%}
+{% if inventory_hostname in service.hosts %}
+services {    
+    name = "{{ service.name }}",
+    {% if service.tags is defined -%}
+    tags = [
+        {% for tag in service.tags -%}      
+        "{{ tag }}",
+        {% endfor %} 
+    ]
+    {% endif %}
+    port = {{ service.port }}
+    {% if service.checks is defined -%}
+    checks = [
+        {% for check in service.checks -%}   
+        {   
+            {% if check.args is defined -%}   
+            args = [{% for arg in check.args %}"{{ arg }}",{% endfor %}]
+            {% endif -%}
+            {% if check.http is defined -%}
+            http = "{{ check.http }}"
+            {% endif -%}
+            {% if check.tcp is defined -%}
+            tcp = "{{ check.tcp }}"
+            {% endif -%}
+            interval = "{{ check.interval }}"      
+            timeout = "{{ check.timeout }}"    
+        }
+        {% endfor %}
+    ]
+    {% endif -%}
+}
+{% endif -%}
+{% endfor %}

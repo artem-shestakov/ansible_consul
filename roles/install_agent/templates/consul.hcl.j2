@@ -17,6 +17,7 @@ disable_update_check = {{ disable_update_check|bool|lower }}
 domain = "{{ domain }}"
 {% endif -%}
 enable_script_checks = {{ enable_script_checks|bool|lower }}
+enable_local_script_checks = {{ enable_local_script_checks|bool|lower }}
 enable_syslog = {{ enable_syslog|bool|lower }}
 encrypt = "{{ encrypt }}"
 log_level = "{{ log_level }}"
@@ -51,7 +52,7 @@ retry_interval = "{{ retry_interval }}"
 retry_join = [
     {% for host in ansible_play_hosts -%}
     {% if hostvars[host].consul_role == 'server' -%} 
-    "{{host}}",
+    "{{ hostvars[host].ansible_host }}",
     {% endif -%} 
     {% endfor -%}
 ]

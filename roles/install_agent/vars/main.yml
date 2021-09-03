@@ -1,13 +1,4 @@
 ---
-# bootstrap_expect: "\
-# {% set _bootstrap_expect = 0 %}\
-# {% for host in ansible_play_hosts %}\
-#     {% if hostvars[host].consul_role == 'server' %}\
-#         {% set _bootstrap_expect = _bootstrap_expect + 1 %}\
-#     {% endif %}\
-# {% endfor %}\
-# {{ _bootstrap_expect }}
-# "
 consul_servers: "\
 {% set _consul_servers = [] %}\
 {% for host in ansible_play_hosts %}\
