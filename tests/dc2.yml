@@ -1,47 +1,52 @@
 ---
 - hosts: dc2
   remote_user: vagrant
-  become: yes
+  become: true
   roles:
-    - "../roles/install_agent"
+    - "{{ playbook_dir }}/../"
   vars:
-    - bind_iface: enp0s8
+    - bind_iface: eth1
     - client_addr: "127.0.0.1 {{ bind_addr }}"
     - datacenter: dc2
-    - encrypt: YrHVSTrfX5EqEnwnQ+2QFqZv21oeggrJTOMU6RYTbx8=
+    - encrypt: bMHyQ1GLDZhrgYBhnSmITQp/xFL4SDtcxm37LALbnMA=
     - enable_local_script_checks: true
     - ports_dns: 53
     - primary_datacenter: dc1
+    - recursors:
+        - 8.8.8.8
+        - 77.88.8.8
     - retry_join_wan:
-      - 192.168.101.11
+        - 192.168.101.11
+        - 192.168.101.12
+        - 192.168.101.13
     - services:
-      - hosts: 
-        - consul4
-        name: Web
-        port: 80
-        tags:
-          - web
-          - nginx
-        checks:
-          - args:
-              - curl
-              - https://localhost:80
-            interval: 30s
-            timeout: 60s
-      - hosts: 
-        - consul4
-        - consul5
-        - consul6
-        name: Consul Web
-        port: 8500
-        tags:
-          - web
-          - consul
-        checks:
-          - args:
-              - curl
-              - https://localhost:8500
-            tcp: localhost:8500
-            http: http://localhost:8500
-            interval: 30s
-            timeout: 60s
+        - hosts:
+            - consul4
+          name: Consul Web portal
+          port: 8500
+          tags:
+            - web
+            - consul
+          checks:
+            - http: http://localhost:8500
+              interval: 60s
+              timeout: 60s
+        - hosts: "{{ ansible_play_hosts }}"
+          name: Consul service
+          port: 8300
+          tags:
+            - service
+            - consul
+          checks:
+            - tcp: "{{ ansible_host}}:8300"
+              interval: 30s
+              timeout: 60s
+        - hosts: consul5
+          name: Google
+          port: 443
+          tags:
+            - google
+          checks:
+            - http: https://google.com
+              interval: 60s
+              timeout: 60s

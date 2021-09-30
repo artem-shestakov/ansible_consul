@@ -17,6 +17,7 @@
 - name: Install Consul
   apt:
     name: consul
-    update_cache: yes
+    update_cache: true
   when: version is not defined
   notify: Enable and start Consul
+  register: install_consul

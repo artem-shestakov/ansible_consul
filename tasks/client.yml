@@ -14,7 +14,7 @@
     owner: consul
     group: consul
     mode: '0744'
-    recurse: yes
+    recurse: true
 
 - name: Configure systemd
   template:

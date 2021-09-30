@@ -7,12 +7,12 @@
 - name: Install a specific version Consul
   yum:
     name: consul-{{ version }}
-  when: version is define
+  when: version is defined
   notify: Enable and start Consul
 
 - name: Install Consul
   yum:
     name: consul
-  when: version is not define
+  when: version is not defined
   notify: Enable and start Consul
   register: install_consul
