@@ -1,10 +1,8 @@
 ---
 - hosts: all
   remote_user: vagrant
-  become: yes
+  become: true
   tasks:
     - name: debug
       debug:
-        msg : "{{ ansible_play_hosts }}"
-        # msg: "{{ hostvars[inventory_hostname].consul_role }}"
-        # msg: "{{ hostvars[inventory_hostname].group_names[0] }}"
+        msg: "{{ ansible_play_hosts }}"

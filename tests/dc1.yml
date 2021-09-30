@@ -1,11 +1,11 @@
 ---
 - hosts: dc1
   remote_user: vagrant
-  become: yes
+  become: true
   roles:
-    - "../roles/install_agent"
+    - "{{ playbook_dir }}/../"
   vars:
     - datacenter: dc1
-    - bind_iface: enp0s8
+    - bind_iface: eth1
+    - client_addr: "127.0.0.1 {{ bind_addr }}"
     - ports_dns: 53
-    

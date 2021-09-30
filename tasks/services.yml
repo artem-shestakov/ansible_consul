@@ -7,3 +7,5 @@
     group: consul
     mode: '0640'
   notify: Restart Consul agent
+  when: services is defined
+  tags: services

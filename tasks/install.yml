@@ -4,6 +4,6 @@
 
 - name: Delete default config file
   file:
-    path: /etc/consul.d/consul.hcl 
+    path: /etc/consul.d/consul.hcl
     state: absent
   when: install_consul.changed
