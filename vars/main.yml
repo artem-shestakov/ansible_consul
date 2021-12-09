@@ -8,3 +8,13 @@ consul_servers: "\
 {% endfor %}\
 {{ _consul_servers }}
 "
+consul_local_servers: "\
+{% set _consul_local_servers = [] %}\
+{% for server in consul_servers %}\
+  {% set _datacenter = hostvars[server]['datacenter'] | default(datacenter, true) %}\
+  {% if _datacenter == datacenter %}\
+    {% if _consul_local_servers.append(server) %}{% endif %}\
+  {% endif %}\
+{% endfor %}\
+{{ _consul_local_servers }}
+"

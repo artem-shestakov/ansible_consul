@@ -1,4 +1,8 @@
 ---
+- name: Expose advertise_addr
+  set_fact:
+    advertise_addr: "{{ advertise_addr }}"
+
 - name: Install Consul
   include_tasks: install.yml
 
